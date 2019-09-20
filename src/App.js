@@ -5,10 +5,14 @@ import FileLayout from './workflow/file-layout/FileLayout';
 import Header from './components/header/Header';
 
 function App() {
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  function handleDrawerToggle() {
+    setMobileOpen(!mobileOpen);
+  }
+
   return (
     <div className="App">
-      <Header />
-      <Layout sidebarComponent={<Sidebar />} mainContent={<FileLayout />}/>
+      <Layout header={<Header handleDrawerToggle={handleDrawerToggle} />} sidebarComponent={<Sidebar mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle}/>} mainContent={<FileLayout />}/>
     </div>
   );
 }
