@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
@@ -10,6 +10,14 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Hidden from "@material-ui/core/Hidden";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
+import arrayMove from 'array-move';
+import DehazeIcon from '@material-ui/icons/Dehaze';
 
 const drawerWidth = 240;
 
@@ -42,12 +50,41 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3)
+  },
+  root2: {
+    width: "100%"
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular
+  },
+  listItem: {
+    float: "right",
+    textAlign: "right"
   }
 }));
+
+const DragHandle = sortableHandle(() => <DehazeIcon />);
+
+const SortableItem = sortableElement(({value}) => (
+  <ListItem style={{ borderTop: "1px solid #efefef", paddingLeft: "50px", zIndex: "9999" }}>
+    <DragHandle />
+    <ListItemText primary={value} style={{ marginLeft: "10px" }} />
+  </ListItem>
+));
+
+const SortableContainer = sortableContainer(({children}) => {
+  return <List style={{ width: "100%", padding: "0" }}>{children}</List>;
+});
 
 const Sidebar = props => {
   const classes = useStyles();
   const theme = useTheme();
+  const [items, setItems] = useState(["Document1.txt", "Scheduler.txt", "Service.txt"]);
+
+  const onSortEnd = ({oldIndex, newIndex}) => {
+    setItems(arrayMove(items, oldIndex, newIndex));
+  };
 
   const drawer = (
     <div>
@@ -55,12 +92,34 @@ const Sidebar = props => {
       <Divider />
       <List>
         {["Desktop", "Documents", "Download"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
+          <ExpansionPanel>
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <ListItem button key={text} style={{ paddingLeft: "0px"}} >
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails style={{ padding: "0", justifyContent: "center" }} >
+              {/* <List> */}
+                {/* {["document1.txt", "scheduler.txt", "service.txt"].map((text, index) => (
+                  <ListItem button key={text} className={classes.listItem}>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                ))} */}
+              {/* </List> */}
+              <SortableContainer onSortEnd={onSortEnd} >
+                {items.map((value, index) => (
+                  <SortableItem key={`item-${value}`} index={index} value={value} />
+                ))}
+              </SortableContainer>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
         ))}
       </List>
       <Divider />
