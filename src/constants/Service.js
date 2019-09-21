@@ -1,10 +1,81 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
+import SaveIcon from "@material-ui/icons/Save";
+import PrintIcon from "@material-ui/icons/Print";
+import ShareIcon from "@material-ui/icons/Share";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import SpeedDial from '@material-ui/lab/SpeedDial';
+import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
+import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 
-const Service1 = props => {
+const useStyles = makeStyles(theme => ({
+  root: {
+    height: 380
+  },
+  speedDial: {
+    position: "absolute",
+    top: theme.spacing(10),
+    right: theme.spacing(3)
+  }
+}));
+
+const actions = [
+  { icon: <FileCopyIcon />, name: "Copy" },
+  { icon: <SaveIcon />, name: "Save" },
+  { icon: <PrintIcon />, name: "Print" },
+  { icon: <ShareIcon />, name: "Share" },
+  { icon: <DeleteIcon />, name: "Delete" }
+];
+
+const Document1 = props => {
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const [hidden, setHidden] = React.useState(false);
+
+  const handleClick = (e) => {
+    console.log(e)
+    setOpen(prevOpen => !prevOpen);
+  };
+
+  const handleOpen = () => {
+    if (!hidden) {
+      setOpen(true);
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <React.Fragment>
-      <Typography variant="h4">SERVICE</Typography>
+      <SpeedDial
+        ariaLabel="SpeedDial openIcon example"
+        className={classes.speedDial}
+        hidden={hidden}
+        icon={<SpeedDialIcon openIcon={<EditIcon />} />}
+        onBlur={handleClose}
+        onClick={handleClick}
+        onClose={handleClose}
+        onFocus={handleOpen}
+        onMouseEnter={handleOpen}
+        onMouseLeave={handleClose}
+        open={open}
+        direction="left"
+      >
+        {actions.map(action => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            onClick={() => handleClick(action.name)}
+          />
+        ))}
+      </SpeedDial>
+      <Typography variant="h4" style={{ marginTop: "50px" }} >SERVICE</Typography>
       <Typography variant="h6">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus
@@ -23,4 +94,4 @@ const Service1 = props => {
   );
 };
 
-export default Service1;
+export default Document1;
