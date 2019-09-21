@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -83,6 +82,7 @@ const Sidebar = props => {
   const [items, setItems] = useState(["Document1.txt", "Scheduler.txt", "Service.txt"]);
 
   const onSortEnd = ({oldIndex, newIndex}) => {
+    props.onItemClick(items[oldIndex]);
     setItems(arrayMove(items, oldIndex, newIndex));
   };
 
@@ -92,7 +92,7 @@ const Sidebar = props => {
       <Divider />
       <List>
         {["Desktop", "Documents", "Download"].map((text, index) => (
-          <ExpansionPanel>
+          <ExpansionPanel key={text}>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"

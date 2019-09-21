@@ -1,6 +1,9 @@
 import React from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Document1 from "../../constants/Document1";
+import Scheduler from "../../constants/Scheduler";
+import Service1 from "../../constants/Service";
 
 const drawerWidth = 240;
 
@@ -38,10 +41,14 @@ const useStyles = makeStyles(theme => ({
 
 const FileLayout = (props) => {
     const classes = useStyles();
+    const { content } = props;
 
     return (
         <main className={classes.content}>
             <div className={classes.toolbar} />
+            {content === "Document1.txt" && <Document1 />}
+            {content === "Scheduler.txt" && <Scheduler />}
+            {content === "Service.txt" && <Service1 />}
         </main>
     )
 }
