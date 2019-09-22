@@ -136,29 +136,6 @@ const Sidebar = props => {
             </ExpansionPanelDetails>
           </ExpansionPanel>
         ))}
-        {/* {["Desktop", "Documents", "Download"].map((text, index) => (
-          <ExpansionPanel key={text}>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <ListItem button key={text} style={{ paddingLeft: "0px"}} >
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails style={{ padding: "0", justifyContent: "center" }} >
-              <SortableContainer onSortEnd={onSortEnd} >
-                {items.map((value, index) => (
-                  <SortableItem key={`item-${value}`} index={index} value={value} />
-                ))}
-              </SortableContainer>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        ))} */}
       </List>
       <Divider />
     </div>

@@ -2,11 +2,13 @@
   "name": "file-dashboard",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://tj3407.github.io/file-dashboard/",
   "dependencies": {
     "@material-ui/core": "^4.4.2",
     "@material-ui/icons": "^4.4.1",
     "@material-ui/lab": "^4.0.0-alpha.26",
     "array-move": "^2.1.0",
+    "gh-pages": "^2.1.1",
     "react": "^16.9.0",
     "react-contenteditable": "^3.3.2",
     "react-dom": "^16.9.0",
@@ -16,6 +18,8 @@
     "sanitize-html": "^1.20.1"
   },
   "scripts": {
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
