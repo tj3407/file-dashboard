@@ -4,12 +4,13 @@ import Typography from "@material-ui/core/Typography";
 import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
 import SaveIcon from "@material-ui/icons/Save";
 import PrintIcon from "@material-ui/icons/Print";
-import ShareIcon from "@material-ui/icons/Share";
+import CheckIcon from "@material-ui/icons/Check";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import SpeedDial from '@material-ui/lab/SpeedDial';
-import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
-import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+import SpeedDial from "@material-ui/lab/SpeedDial";
+import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
+import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
+import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,10 +24,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const actions = [
+  { icon: <EditIcon />, name: "Edit" },
   { icon: <FileCopyIcon />, name: "Copy" },
   { icon: <SaveIcon />, name: "Save" },
   { icon: <PrintIcon />, name: "Print" },
-  { icon: <ShareIcon />, name: "Share" },
   { icon: <DeleteIcon />, name: "Delete" }
 ];
 
@@ -35,8 +36,8 @@ const Document1 = props => {
   const [open, setOpen] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);
 
-  const handleClick = (e) => {
-    console.log(e)
+  const handleClick = e => {
+    console.log(e);
     setOpen(prevOpen => !prevOpen);
   };
 
@@ -56,7 +57,7 @@ const Document1 = props => {
         ariaLabel="SpeedDial openIcon example"
         className={classes.speedDial}
         hidden={hidden}
-        icon={<SpeedDialIcon openIcon={<EditIcon />} />}
+        icon={<SpeedDialIcon openIcon={<CheckIcon />} />}
         onBlur={handleClose}
         onClick={handleClick}
         onClose={handleClose}
@@ -75,21 +76,26 @@ const Document1 = props => {
           />
         ))}
       </SpeedDial>
-      <Typography variant="h4" style={{ marginTop: "50px" }} >SERVICE</Typography>
-      <Typography variant="h6">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus
-        non enim praesent elementum facilisis leo vel. Risus at ultrices mi
-        tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non
-        tellus. Convallis convallis tellus id interdum velit laoreet id donec
-        ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl
-        suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod
-        quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet
-        proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras
-        tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum
-        varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt.
-        Lorem donec massa sapien faucibus et molestie ac.
-      </Typography>
+      <Paper style={{ padding: "25px" }}>
+        <Typography variant="h4" style={{ marginTop: "50px" }}>
+          SERVICE
+        </Typography>
+        <Typography variant="h6">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
+          dolor purus non enim praesent elementum facilisis leo vel. Risus at
+          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
+          quisque non tellus. Convallis convallis tellus id interdum velit
+          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
+          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
+          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
+          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
+          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
+          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
+          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
+          faucibus et molestie ac.
+        </Typography>
+      </Paper>
     </React.Fragment>
   );
 };

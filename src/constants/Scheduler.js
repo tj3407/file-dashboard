@@ -1,95 +1,77 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
-import SaveIcon from "@material-ui/icons/Save";
-import PrintIcon from "@material-ui/icons/Print";
-import ShareIcon from "@material-ui/icons/Share";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import SpeedDial from '@material-ui/lab/SpeedDial';
-import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
-import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+import Paper from "@material-ui/core/Paper";
+import ContentEditable from "react-contenteditable";
+import sanitizeHtml from "sanitize-html";
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    height: 380
-  },
-  speedDial: {
-    position: "absolute",
-    top: theme.spacing(10),
-    right: theme.spacing(3)
-  }
-}));
-
-const actions = [
-  { icon: <FileCopyIcon />, name: "Copy" },
-  { icon: <SaveIcon />, name: "Save" },
-  { icon: <PrintIcon />, name: "Print" },
-  { icon: <ShareIcon />, name: "Share" },
-  { icon: <DeleteIcon />, name: "Delete" }
-];
+const content = `
+        <div>
+            <h1 style={{ marginTop: "50px" }}>
+            SCHEDULER
+            </h1>
+            <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus
+            non enim praesent elementum facilisis leo vel. Risus at ultrices mi
+            tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non
+            tellus. Convallis convallis tellus id interdum velit laoreet id donec
+            ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl
+            suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod
+            quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet
+            proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras
+            tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum
+            varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt.
+            Lorem donec massa sapien faucibus et molestie ac.
+            </p>
+        </div>
+    `;
 
 const Document1 = props => {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [hidden, setHidden] = React.useState(false);
+  const [html, setHtml] = React.useState(content);
+  const [editable, setEditable] = React.useState(true);
+  const [sanitizeContent, setSanitizeContent] = React.useState(false);
+  let editableField = React.createRef();
 
-  const handleClick = (e) => {
-    console.log(e)
-    setOpen(prevOpen => !prevOpen);
+  const focusDiv = () => {
+    editableField.current.focus();
   };
 
-  const handleOpen = () => {
-    if (!hidden) {
-      setOpen(true);
+  React.useEffect(() => {
+    if (editable === false) {
+      focusDiv();
     }
+  }, [editable]);
+
+  React.useEffect(() => {
+    if (sanitizeContent) {
+      sanitize(html);
+    }
+  }, [sanitizeContent]);
+
+  const handleChange = e => {
+    setHtml(e.target.value);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const sanitizeConf = {
+    allowedTags: ["b", "i", "em", "strong", "a", "p", "h1", "h6", "h4", "div"],
+    allowedAttributes: { a: ["href"] }
+  };
+
+  const sanitize = html => {
+    setHtml(sanitizeHtml(html, sanitizeConf));
   };
 
   return (
     <React.Fragment>
-      <SpeedDial
-        ariaLabel="SpeedDial openIcon example"
-        className={classes.speedDial}
-        hidden={hidden}
-        icon={<SpeedDialIcon openIcon={<EditIcon />} />}
-        onBlur={handleClose}
-        onClick={handleClick}
-        onClose={handleClose}
-        onFocus={handleOpen}
-        onMouseEnter={handleOpen}
-        onMouseLeave={handleClose}
-        open={open}
-        direction="left"
-      >
-        {actions.map(action => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            onClick={() => handleClick(action.name)}
-          />
-        ))}
-      </SpeedDial>
-      <Typography variant="h4" style={{ marginTop: "50px" }} >SCHEDULER</Typography>
-      <Typography variant="h6">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus
-        non enim praesent elementum facilisis leo vel. Risus at ultrices mi
-        tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non
-        tellus. Convallis convallis tellus id interdum velit laoreet id donec
-        ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl
-        suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod
-        quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet
-        proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras
-        tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum
-        varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt.
-        Lorem donec massa sapien faucibus et molestie ac.
-      </Typography>
+      <Paper ref={editableField}>
+        <ContentEditable
+          tagName="pre"
+          html={html}
+          disabled={editable}
+          onChange={handleChange}
+          onClick={() => setEditable(false)}
+          onBlur={() => setSanitizeContent(true)}
+        />
+      </Paper>
     </React.Fragment>
   );
 };
